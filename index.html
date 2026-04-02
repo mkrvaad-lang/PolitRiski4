@@ -30,6 +30,7 @@
         .text-gradient {
             background: linear-gradient(135deg, #fff 0%, #00f2ff 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .bg-gradient-water {
@@ -322,40 +323,332 @@
         </div>
     </section>
 
-    <!-- SWOT -->
-    <section class="py-32 container mx-auto px-6">
-        <div class="grid md:grid-cols-2 gap-4">
-            <div class="glass p-10 rounded-3xl border-l-4 border-green-500">
-                <h3 class="text-2xl font-bold mb-4 text-green-400">Strengths</h3>
-                <ul class="text-slate-400 space-y-2 text-sm">
-                    <li>• Масштабированный продукт с кейсами</li>
-                    <li>• Собственная облачная платформа</li>
-                    <li>• Высокая маржинальность (+693% прибыль)</li>
-                </ul>
+    <!-- Stakeholder Map -->
+    <section id="stakeholders" class="py-32 bg-slate-900/40 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Карта <span class="text-cyan-400">стейкхолдеров</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Интерактивная экосистема влияния и взаимодействия участников проекта в зависимости от выбранной стратегии.</p>
             </div>
-            <div class="glass p-10 rounded-3xl border-l-4 border-red-500">
-                <h3 class="text-2xl font-bold mb-4 text-red-400">Weaknesses</h3>
-                <ul class="text-slate-400 space-y-2 text-sm">
-                    <li>• Зависимость от импортных IoT-компонентов</li>
-                    <li>• Отсутствие локального офиса в Ташкенте</li>
-                </ul>
+
+            <!-- Scenario Selector -->
+            <div class="flex justify-center mb-12">
+                <div class="glass p-1 rounded-full flex gap-1">
+                    <button onclick="updateGraph('ppp')" id="btn-ppp" class="scenario-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-cyan-500 text-black">ГЧП</button>
+                    <button onclick="updateGraph('saas')" id="btn-saas" class="scenario-btn px-6 py-2 rounded-full text-sm font-bold transition-all text-slate-400 hover:text-white">SaaS</button>
+                    <button onclick="updateGraph('unido')" id="btn-unido" class="scenario-btn px-6 py-2 rounded-full text-sm font-bold transition-all text-slate-400 hover:text-white">ЮНИДО</button>
+                </div>
             </div>
-            <div class="glass p-10 rounded-3xl border-l-4 border-cyan-500">
-                <h3 class="text-2xl font-bold mb-4 text-cyan-400">Opportunities</h3>
-                <ul class="text-slate-400 space-y-2 text-sm">
-                    <li>• Кредит АБР на $125 млн для Узбекистана</li>
-                    <li>• Статус "гуманитарно необходимой" технологии</li>
-                </ul>
-            </div>
-            <div class="glass p-10 rounded-3xl border-l-4 border-orange-500">
-                <h3 class="text-2xl font-bold mb-4 text-orange-400">Threats</h3>
-                <ul class="text-slate-400 space-y-2 text-sm">
-                    <li>• Конкуренция с Huawei/ZTE (BRI)</li>
-                    <li>• Вторичные санкции США на банки-партнеры</li>
-                </ul>
+
+            <div class="relative glass rounded-[40px] overflow-hidden border-white/5 h-[600px] flex items-center justify-center bg-black/20">
+                <!-- SVG Graph Container -->
+                <svg id="stakeholder-graph" class="w-full h-full cursor-move">
+                    <defs>
+                        <marker id="arrowhead" viewBox="0 0 10 10" refX="25" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.2)" />
+                        </marker>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <g id="links-group"></g>
+                    <g id="nodes-group"></g>
+                </svg>
+
+                <!-- Legend -->
+                <div class="absolute bottom-8 left-8 glass p-4 rounded-2xl text-[10px] uppercase tracking-widest space-y-2 border-white/10">
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-blue-500"></div> Государство</div>
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-purple-500"></div> Межд. организации</div>
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500"></div> Финансы</div>
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-cyan-400"></div> MWS / Партнеры</div>
+                    <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-red-500"></div> Конкуренты</div>
+                </div>
+
+                <!-- Node Info Panel (Floating) -->
+                <div id="node-info" class="absolute top-8 right-8 w-64 glass p-6 rounded-3xl border-cyan-500/30 opacity-0 translate-x-10 transition-all duration-500 pointer-events-none">
+                    <h4 id="node-name" class="text-lg font-bold text-white mb-1">Stakeholder</h4>
+                    <p id="node-role" class="text-cyan-400 text-[10px] font-bold uppercase mb-4 tracking-wider">Role</p>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-[10px] text-slate-500 uppercase mb-1">Влияние</div>
+                            <div class="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+                                <div id="node-power" class="h-full bg-cyan-500" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <p id="node-desc" class="text-xs text-slate-400 leading-relaxed">Описание интересов и рисков стейкхолдера в данном сценарии.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- PEST Analysis -->
+    <section id="pest" class="py-32 bg-slate-900/20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">PEST Анализ</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Стратегический контекст выхода на рынок Узбекистана через призму внешних факторов.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Political -->
+                <div class="glass-card p-10 rounded-[40px] cursor-pointer group transition-all duration-500 hover:border-cyan-500/50" onclick="openPestModal('political')">
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="p-4 bg-cyan-500/10 rounded-2xl text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="landmark"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Political</h3>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-6 text-cyan-400">Политическое окно открыто — но с фильтрами</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Многовекторная политика</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Гос. спрос на цифровизацию воды</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Санкции влияют на финансы</span>
+                        </li>
+                    </ul>
+                    <div class="mt-8 text-xs font-bold text-cyan-500/50 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">Нажмите для деталей →</div>
+                </div>
+
+                <!-- Economic -->
+                <div class="glass-card p-10 rounded-[40px] cursor-pointer group transition-all duration-500 hover:border-cyan-500/50" onclick="openPestModal('economic')">
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="p-4 bg-cyan-500/10 rounded-2xl text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="trending-up"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Economic</h3>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-6 text-cyan-400">Борьба за стандарты рынка</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>$160M+ международных инвестиций</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Россия — ключевой партнёр</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Переход к аналитике</span>
+                        </li>
+                    </ul>
+                    <div class="mt-8 text-xs font-bold text-cyan-500/50 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">Нажмите для деталей →</div>
+                </div>
+
+                <!-- Social -->
+                <div class="glass-card p-10 rounded-[40px] cursor-pointer group transition-all duration-500 hover:border-cyan-500/50" onclick="openPestModal('social')">
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="p-4 bg-cyan-500/10 rounded-2xl text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Social</h3>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-6 text-cyan-400">Вода = социальная стабильность</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Ограниченный доступ к воде</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Зависимость от ирригации</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Низкая цифровая готовность</span>
+                        </li>
+                    </ul>
+                    <div class="mt-8 text-xs font-bold text-cyan-500/50 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">Нажмите для деталей →</div>
+                </div>
+
+                <!-- Technological -->
+                <div class="glass-card p-10 rounded-[40px] cursor-pointer group transition-all duration-500 hover:border-cyan-500/50" onclick="openPestModal('technological')">
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="p-4 bg-cyan-500/10 rounded-2xl text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Technological</h3>
+                    </div>
+                    <h4 class="text-lg font-semibold mb-6 text-cyan-400">Окно технологической интеграции</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Запуск Suv hisobi</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Совпадение архитектуры</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
+                            <span>Локализация данных обязательна</span>
+                        </li>
+                    </ul>
+                    <div class="mt-8 text-xs font-bold text-cyan-500/50 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">Нажмите для деталей →</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SWOT Analysis -->
+    <section id="swot" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-20">
+                <div class="inline-block px-4 py-1 border border-cyan-500/30 rounded-full text-cyan-400 text-[10px] font-bold mb-4 tracking-[0.2em] uppercase">
+                    Strategic Positioning
+                </div>
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tighter">SWOT <span class="text-gradient">Matrix</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-lg font-light">Глубокий анализ стратегической позиции Smart Water на рынке Узбекистана: от внутренних компетенций до глобальных вызовов.</p>
+            </div>
+
+            <!-- SWOT Grid -->
+            <div class="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto relative" id="swot-grid">
+                <!-- Connection Lines (Desktop Only) -->
+                <div class="hidden md:block absolute inset-0 pointer-events-none">
+                    <div class="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                    <div class="absolute left-1/2 top-0 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent"></div>
+                </div>
+
+                <!-- STRENGTHS -->
+                <div class="glass-card p-10 rounded-[40px] border-l-4 border-emerald-500/50 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(16,185,129,0.1)]" onclick="openSwotModal('strengths')">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="p-4 bg-emerald-500/10 rounded-2xl text-emerald-400">
+                            <i data-lucide="trending-up" class="w-8 h-8"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-emerald-500/50 tracking-widest uppercase">Internal / Positive</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-6 text-white group-hover:text-emerald-400 transition-colors">Strengths</h3>
+                    <ul class="space-y-3 text-slate-400 mb-8">
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-emerald-500 rounded-full"></div>
+                            <span>Уникальный стек: IoT + Cloud + AI</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-emerald-500 rounded-full"></div>
+                            <span>Рост выручки: 51 млрд руб (+58%)</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-emerald-500 rounded-full font-bold text-emerald-400"></div>
+                            <span class="font-semibold text-emerald-400/80">Прибыль: +693%</span>
+                        </li>
+                    </ul>
+                    <div class="flex items-center gap-2 text-xs font-bold text-emerald-500/40 group-hover:text-emerald-400 transition-all">
+                        EXPLORE DATA <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    </div>
+                </div>
+
+                <!-- WEAKNESSES -->
+                <div class="glass-card p-10 rounded-[40px] border-l-4 border-orange-500/50 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(249,115,22,0.1)]" onclick="openSwotModal('weaknesses')">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="p-4 bg-orange-500/10 rounded-2xl text-orange-400">
+                            <i data-lucide="alert-circle" class="w-8 h-8"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-orange-500/50 tracking-widest uppercase">Internal / Negative</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-6 text-white group-hover:text-orange-400 transition-colors">Weaknesses</h3>
+                    <ul class="space-y-3 text-slate-400 mb-8">
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-orange-500 rounded-full"></div>
+                            <span>Зависимость от геополитики</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-orange-500 rounded-full"></div>
+                            <span>Ограниченный инт. опыт</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-orange-500 rounded-full"></div>
+                            <span>Дорогой импорт оборудования</span>
+                        </li>
+                    </ul>
+                    <div class="flex items-center gap-2 text-xs font-bold text-orange-500/40 group-hover:text-orange-400 transition-all">
+                        VIEW LIMITATIONS <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    </div>
+                </div>
+
+                <!-- OPPORTUNITIES -->
+                <div class="glass-card p-10 rounded-[40px] border-l-4 border-cyan-500/50 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40_rgba(6,182,212,0.1)]" onclick="openSwotModal('opportunities')">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="p-4 bg-cyan-500/10 rounded-2xl text-cyan-400">
+                            <i data-lucide="lightbulb" class="w-8 h-8"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-cyan-500/50 tracking-widest uppercase">External / Positive</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-6 text-white group-hover:text-cyan-400 transition-colors">Opportunities</h3>
+                    <ul class="space-y-3 text-slate-400 mb-8">
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-cyan-500 rounded-full"></div>
+                            <span>Рынок $200M (рост ×2)</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-cyan-500 rounded-full"></div>
+                            <span>Водный кризис в регионе</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-cyan-500 rounded-full"></div>
+                            <span>Финансирование ADB ($125M)</span>
+                        </li>
+                    </ul>
+                    <div class="flex items-center gap-2 text-xs font-bold text-cyan-500/40 group-hover:text-cyan-400 transition-all">
+                        GROWTH POTENTIAL <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    </div>
+                </div>
+
+                <!-- THREATS -->
+                <div class="glass-card p-10 rounded-[40px] border-l-4 border-red-500/50 group cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(239,68,68,0.1)]" onclick="openSwotModal('threats')">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="p-4 bg-red-500/10 rounded-2xl text-red-400">
+                            <i data-lucide="shield-alert" class="w-8 h-8"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-red-500/50 tracking-widest uppercase">External / Negative</span>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-6 text-white group-hover:text-red-400 transition-colors">Threats</h3>
+                    <ul class="space-y-3 text-slate-400 mb-8">
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-red-500 rounded-full"></div>
+                            <span class="text-red-400/90 font-semibold">Суверенитет данных (Критично)</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-red-500 rounded-full"></div>
+                            <span>Китай как доминирующий инвестор</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <div class="w-1 h-1 bg-red-500 rounded-full"></div>
+                            <span>Вторичные санкции США</span>
+                        </li>
+                    </ul>
+                    <div class="flex items-center gap-2 text-xs font-bold text-red-500/40 group-hover:text-red-400 transition-all">
+                        RISK ASSESSMENT <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SWOT Modal -->
+    <div id="swot-modal" class="fixed inset-0 z-[120] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-2xl" id="swot-modal-overlay"></div>
+        <div class="glass p-12 rounded-[40px] relative z-10 max-w-3xl w-full mx-6 border-white/10 shadow-2xl transform scale-95 transition-all duration-500" id="swot-modal-content">
+            <button id="close-swot-modal" class="absolute top-8 right-8 text-slate-500 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <div id="swot-modal-body" class="max-h-[70vh] overflow-y-auto pr-4 custom-scrollbar">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
 
     <!-- Footer / CTA -->
     <footer class="py-32 bg-black text-center border-t border-white/5">
@@ -400,11 +693,324 @@
         </div>
     </div>
 
+    <!-- PEST Modal -->
+    <div id="pest-modal" class="fixed inset-0 z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" id="pest-modal-overlay"></div>
+        <div class="glass p-12 rounded-[40px] relative z-10 max-w-2xl w-full mx-6 border-cyan-500/30 shadow-[0_0_50px_rgba(0,242,255,0.1)] transform scale-90 transition-all duration-500" id="pest-modal-content">
+            <button id="close-pest-modal" class="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors">
+                <i data-lucide="x"></i>
+            </button>
+            <div id="pest-modal-body">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
 
-        // Modal Logic
+        // PEST Modal Logic
+        const pestModal = document.getElementById('pest-modal');
+        const pestModalContent = document.getElementById('pest-modal-content');
+        const pestModalBody = document.getElementById('pest-modal-body');
+        const closePestModal = document.getElementById('close-pest-modal');
+        const pestModalOverlay = document.getElementById('pest-modal-overlay');
+
+        const pestData = {
+            political: {
+                title: "Political Analysis",
+                subtitle: "Политическое окно открыто — но с фильтрами",
+                details: "Узбекистан проводит политику открытости, но сохраняет жесткий контроль над стратегическими ресурсами. Цифровизация воды поддерживается на высшем государственном уровне как элемент национальной безопасности. Основной риск — вторичные санкции, влияющие на трансграничные платежи."
+            },
+            economic: {
+                title: "Economic Analysis",
+                subtitle: "Борьба за стандарты рынка",
+                details: "Рынок ирригации и управления водой в ЦА переживает бум инвестиций. Россия остается ключевым технологическим партнером, но сталкивается с конкуренцией со стороны Китая и ЕС. Переход от простой продажи оборудования к аналитическим сервисам (SaaS) — главный тренд 2026 года."
+            },
+            social: {
+                title: "Social Analysis",
+                subtitle: "Вода = социальная стабильность",
+                details: "Дефицит воды в Ферганской долине и других регионах создает риски социальной напряженности. Внедрение Smart Water напрямую влияет на уровень жизни и продовольственную безопасность. Однако низкая цифровая грамотность на местах требует упрощенных интерфейсов."
+            },
+            technological: {
+                title: "Technological Analysis",
+                subtitle: "Окно технологической интеграции",
+                details: "Государственная система 'Suv hisobi' создает базу для интеграции. Архитектура MWS Smart Water совместима с локальными стандартами. Критическим требованием остается локализация данных на серверах внутри Узбекистана (on-premise или локальное облако)."
+            }
+        };
+
+        function openPestModal(type) {
+            const data = pestData[type];
+            pestModalBody.innerHTML = `
+                <div class="text-center md:text-left">
+                    <h3 class="text-3xl font-bold mb-2 text-white">${data.title}</h3>
+                    <p class="text-cyan-400 font-medium mb-8 uppercase tracking-widest text-xs">${data.subtitle}</p>
+                    <div class="p-8 glass rounded-3xl text-slate-300 leading-relaxed text-lg">
+                        ${data.details}
+                    </div>
+                    <button onclick="hidePestModal()" class="mt-10 px-8 py-3 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all">
+                        Закрыть
+                    </button>
+                </div>
+            `;
+            pestModal.classList.remove('opacity-0', 'pointer-events-none');
+            pestModalContent.classList.remove('scale-90');
+            pestModalContent.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hidePestModal() {
+            pestModal.classList.add('opacity-0', 'pointer-events-none');
+            pestModalContent.classList.remove('scale-100');
+            pestModalContent.classList.add('scale-90');
+            document.body.style.overflow = 'auto';
+        }
+
+        closePestModal.addEventListener('click', hidePestModal);
+        pestModalOverlay.addEventListener('click', hidePestModal);
+
+        // SWOT Modal Logic
+        const swotModal = document.getElementById('swot-modal');
+        const swotModalContent = document.getElementById('swot-modal-content');
+        const swotModalBody = document.getElementById('swot-modal-body');
+        const closeSwotModal = document.getElementById('close-swot-modal');
+        const swotModalOverlay = document.getElementById('swot-modal-overlay');
+
+        const swotData = {
+            strengths: {
+                title: "Strengths",
+                color: "emerald",
+                items: [
+                    { t: "Уникальный продукт", d: "IoT + облако + предиктивная аналитика в едином контуре." },
+                    { t: "Финансовый рост", d: "Выручка 51 млрд руб (+58%), прибыль +693%." },
+                    { t: "Динамика Smart Water", d: "Рост продукта на 53% за последний год." },
+                    { t: "Санкционная устойчивость", d: "Собственные облачные технологии и ПО." },
+                    { t: "Политическая легитимность", d: "Поддержка РФ и статус гуманитарно значимого проекта." }
+                ]
+            },
+            weaknesses: {
+                title: "Weaknesses",
+                color: "orange",
+                items: [
+                    { t: "Геополитическая зависимость", d: "Риски изменения внешнеполитического курса." },
+                    { t: "Международный опыт", d: "Ограниченное количество кейсов за пределами РФ." },
+                    { t: "Ресурсный дефицит", d: "Недостаточность политического влияния без прямого финансирования." },
+                    { t: "Стоимость импорта", d: "Высокая цена на зарубежные IoT-компоненты." },
+                    { t: "Технологические барьеры", d: "Сложность соответствия стандартам IFI (World Bank/EBRD)." }
+                ]
+            },
+            opportunities: {
+                title: "Opportunities",
+                color: "cyan",
+                items: [
+                    { t: "Объем рынка", d: "$130–200 млн с потенциалом удвоения к 2030 году." },
+                    { t: "Водный кризис", d: "Критическая потребность региона в управлении ресурсами." },
+                    { t: "Финансирование ADB", d: "Одобренный кредит на $125 млн для цифровизации сектора." },
+                    { t: "Миграционный рычаг", d: "2–3 млн граждан УЗ в РФ как инструмент торга." },
+                    { t: "Кооперация с Китаем", d: "Возможность совместных проектов в рамках BRI." }
+                ]
+            },
+            threats: {
+                title: "Threats",
+                color: "red",
+                items: [
+                    { t: "Китайская экспансия", d: "Huawei и ZTE как доминирующие инфраструктурные инвесторы." },
+                    { t: "Западные стандарты", d: "Доминирование европейских игроков (Voith, Andritz)." },
+                    { t: "Вторичные санкции", d: "Давление США на банковскую систему Узбекистана." },
+                    { t: "Суверенитет данных", d: "Критическое требование локализации данных внутри страны." },
+                    { t: "Исламистские риски", d: "Угроза стабильности в Ферганской долине (ISKP)." }
+                ]
+            }
+        };
+
+        function openSwotModal(type) {
+            const data = swotData[type];
+            let itemsHtml = data.items.map(item => `
+                <div class="p-6 glass rounded-2xl border-l-4 border-${data.color}-500/50 mb-4">
+                    <h4 class="text-lg font-bold text-white mb-2">${item.t}</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">${item.d}</p>
+                </div>
+            `).join('');
+
+            swotModalBody.innerHTML = `
+                <div class="mb-10">
+                    <h3 class="text-4xl font-bold text-${data.color}-400 mb-2">${data.title}</h3>
+                    <p class="text-slate-500 uppercase tracking-[0.2em] text-xs font-bold">Strategic Analysis Detail</p>
+                </div>
+                <div class="grid gap-4">
+                    ${itemsHtml}
+                </div>
+            `;
+            swotModal.classList.remove('opacity-0', 'pointer-events-none');
+            swotModalContent.classList.remove('scale-95');
+            swotModalContent.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideSwotModal() {
+            swotModal.classList.add('opacity-0', 'pointer-events-none');
+            swotModalContent.classList.remove('scale-100');
+            swotModalContent.classList.add('scale-95');
+            document.body.style.overflow = 'auto';
+        }
+
+        closeSwotModal.addEventListener('click', hideSwotModal);
+        swotModalOverlay.addEventListener('click', hideSwotModal);
+
+        // Stakeholder Graph Logic
+        const graphSvg = document.getElementById('stakeholder-graph');
+        const nodesGroup = document.getElementById('nodes-group');
+        const linksGroup = document.getElementById('links-group');
+        const nodeInfo = document.getElementById('node-info');
+        const nodeName = document.getElementById('node-name');
+        const nodeRole = document.getElementById('node-role');
+        const nodePower = document.getElementById('node-power');
+        const nodeDesc = document.getElementById('node-desc');
+
+        const stakeholderData = {
+            ppp: {
+                nodes: [
+                    { id: 'mws', name: 'MWS / Smart Water', role: 'Технология', color: '#00f2ff', size: 40, power: 100, desc: 'Центральный узел: поставщик технологий и оператор данных.' },
+                    { id: 'pres', name: 'Администрация Президента', role: 'Государство', color: '#3b82f6', size: 35, power: 95, desc: 'Ключевой регулятор и инициатор цифровизации.' },
+                    { id: 'minvod', name: 'Минводхоз УЗ', role: 'Государство', color: '#3b82f6', size: 30, power: 85, desc: 'Отраслевой регулятор, владелец инфраструктуры.' },
+                    { id: 'uzsuv', name: 'Узсувтаъминот', role: 'Оператор', color: '#3b82f6', size: 28, power: 80, desc: 'Конечный пользователь и исполнитель на местах.' },
+                    { id: 'veb', name: 'ВЭБ.РФ', role: 'Финансы', color: '#10b981', size: 25, power: 75, desc: 'Кредитное плечо для реализации ГЧП-проекта.' }
+                ],
+                links: [
+                    { source: 'mws', target: 'uzsuv', type: 'технология' },
+                    { source: 'pres', target: 'mws', type: 'регулирование' },
+                    { source: 'minvod', target: 'uzsuv', type: 'регулирование' },
+                    { source: 'veb', target: 'mws', type: 'финансирование' }
+                ]
+            },
+            saas: {
+                nodes: [
+                    { id: 'mws', name: 'MWS / Smart Water', role: 'Технология', color: '#00f2ff', size: 40, power: 100, desc: 'Поставщик облачных сервисов по подписке.' },
+                    { id: 'agro', name: 'Агрохолдинги', role: 'Частный сектор', color: '#f59e0b', size: 30, power: 70, desc: 'Прямые потребители данных для ирригации.' },
+                    { id: 'telecom', name: 'Узбектелеком', role: 'Инфраструктура', color: '#00f2ff', size: 25, power: 60, desc: 'Партнер по передаче данных и IoT-связи.' },
+                    { id: 'minvod', name: 'Минводхоз УЗ', role: 'Государство', color: '#3b82f6', size: 25, power: 80, desc: 'Регулятор стандартов данных.' }
+                ],
+                links: [
+                    { source: 'mws', target: 'agro', type: 'B2B' },
+                    { source: 'mws', target: 'telecom', type: 'партнерство' },
+                    { source: 'minvod', target: 'mws', type: 'регулирование' }
+                ]
+            },
+            unido: {
+                nodes: [
+                    { id: 'mws', name: 'MWS / Smart Water', role: 'Технология', color: '#00f2ff', size: 40, power: 100, desc: 'Участник международного тендера.' },
+                    { id: 'unido', name: 'UNIDO', role: 'Межд. организация', color: '#a855f7', size: 35, power: 90, desc: 'Организатор тендера и гарант легитимности.' },
+                    { id: 'adb', name: 'ADB / EBRD', role: 'Финансы', color: '#10b981', size: 30, power: 85, desc: 'Источники финансирования ($125M+).' },
+                    { id: 'suez', name: 'Suez / Veolia', role: 'Конкуренты', color: '#ef4444', size: 28, power: 75, desc: 'Европейские игроки, претендующие на лоты.' },
+                    { id: 'local', name: 'Локальные партнеры', role: 'Партнеры', color: '#00f2ff', size: 22, power: 50, desc: 'Необходимое условие тендера: локализация.' }
+                ],
+                links: [
+                    { source: 'unido', target: 'mws', type: 'тендер' },
+                    { source: 'unido', target: 'suez', type: 'тендер' },
+                    { source: 'adb', target: 'unido', type: 'финансирование' },
+                    { source: 'mws', target: 'local', type: 'партнерство' }
+                ]
+            }
+        };
+
+        function updateGraph(scenario) {
+            // Update buttons
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-500', 'text-black');
+                btn.classList.add('text-slate-400');
+            });
+            document.getElementById(`btn-${scenario}`).classList.add('bg-cyan-500', 'text-black');
+            document.getElementById(`btn-${scenario}`).classList.remove('text-slate-400');
+
+            const data = stakeholderData[scenario];
+            const width = graphSvg.clientWidth;
+            const height = graphSvg.clientHeight;
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // Clear current graph
+            nodesGroup.innerHTML = '';
+            linksGroup.innerHTML = '';
+
+            // Position nodes in a circle around center
+            data.nodes.forEach((node, i) => {
+                if (node.id === 'mws') {
+                    node.x = centerX;
+                    node.y = centerY;
+                } else {
+                    const angle = (i / (data.nodes.length - 1)) * Math.PI * 2;
+                    const radius = 180;
+                    node.x = centerX + Math.cos(angle) * radius;
+                    node.y = centerY + Math.sin(angle) * radius;
+                }
+            });
+
+            // Draw links
+            data.links.forEach(link => {
+                const source = data.nodes.find(n => n.id === link.source);
+                const target = data.nodes.find(n => n.id === link.target);
+                
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', source.x);
+                line.setAttribute('y1', source.y);
+                line.setAttribute('x2', target.x);
+                line.setAttribute('y2', target.y);
+                line.setAttribute('stroke', 'rgba(255,255,255,0.1)');
+                line.setAttribute('stroke-width', '1');
+                line.setAttribute('marker-end', 'url(#arrowhead)');
+                linksGroup.appendChild(line);
+            });
+
+            // Draw nodes
+            data.nodes.forEach(node => {
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('class', 'cursor-pointer group');
+                g.addEventListener('mouseenter', () => showNodeInfo(node));
+                g.addEventListener('mouseleave', hideNodeInfo);
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', node.x);
+                circle.setAttribute('cy', node.y);
+                circle.setAttribute('r', node.size);
+                circle.setAttribute('fill', node.color);
+                circle.setAttribute('fill-opacity', '0.2');
+                circle.setAttribute('stroke', node.color);
+                circle.setAttribute('stroke-width', '2');
+                circle.setAttribute('filter', 'url(#glow)');
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', node.x);
+                text.setAttribute('y', node.y + node.size + 20);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', 'white');
+                text.setAttribute('font-size', '10');
+                text.setAttribute('font-weight', 'bold');
+                text.setAttribute('class', 'uppercase tracking-tighter');
+                text.textContent = node.name;
+
+                g.appendChild(circle);
+                g.appendChild(text);
+                nodesGroup.appendChild(g);
+            });
+        }
+
+        function showNodeInfo(node) {
+            nodeName.textContent = node.name;
+            nodeRole.textContent = node.role;
+            nodePower.style.width = `${node.power}%`;
+            nodeDesc.textContent = node.desc;
+            nodeInfo.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
+        }
+
+        function hideNodeInfo() {
+            nodeInfo.classList.add('opacity-0', 'translate-x-10', 'pointer-events-none');
+        }
+
+        // Initial graph
+        updateGraph('ppp');
+
+        // SWOT Modal Logic
         const contactBtn = document.getElementById('contact-btn');
         const modal = document.getElementById('contact-modal');
         const modalContent = document.getElementById('modal-content');
