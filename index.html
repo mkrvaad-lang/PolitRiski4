@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проект Политические риски</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f1a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(0, 242, 255, 0.3);
+            transform: translateY(-5px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #00f2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-gradient-water {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+        }
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #00f2ff;
+            z-index: 100;
+            width: 0%;
+        }
+        .risk-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: #00f2ff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00f2ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar" class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6 px-10 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center font-bold text-white">M</div>
+            <span class="font-bold tracking-tighter text-xl">MWS <span class="text-cyan-400">SMART WATER</span></span>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest opacity-70">
+            <a href="#profile" class="hover:text-cyan-400 transition-colors">Профиль</a>
+            <a href="#product" class="hover:text-cyan-400 transition-colors">Продукт</a>
+            <a href="#strategy" class="hover:text-cyan-400 transition-colors">Стратегия</a>
+            <a href="#risks" class="hover:text-cyan-400 transition-colors">Риски</a>
+        </div>
+        <button class="px-6 py-2 border border-cyan-500/50 rounded-full text-xs font-bold hover:bg-cyan-500/10 transition-all">
+            UZBEKISTAN 2026
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div class="absolute inset-0 bg-gradient-water"></div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <div class="inline-block px-4 py-1 border border-cyan-500/30 rounded-full text-cyan-400 text-xs font-bold mb-6 tracking-widest uppercase animate-pulse">
+                Strategic Market Entry
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold mb-6 tracking-tighter leading-none">
+                Smart Water <br> <span class="text-gradient">в Узбекистане</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto mb-10 font-light leading-relaxed">
+                Цифровое управление водными ресурсами как стратегический актив национальной безопасности и экономического роста.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#strategy" class="px-10 py-4 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition-all transform hover:scale-105">
+                    Изучить стратегию
+                </a>
+                <a href="#product" class="px-10 py-4 glass rounded-full font-bold hover:bg-white/10 transition-all">
+                    Технологический стек
+                </a>
+            </div>
+        </div>
+        <!-- Floating Elements -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
+            <i data-lucide="chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Company Profile -->
+    <section id="profile" class="py-32 container mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-20 items-center">
+            <div>
+                <h2 class="text-4xl font-bold mb-8">МТС Веб Сервисы</h2>
+                <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                    Бигтех-лидер, предоставляющий облачные и AI-решения. Мы трансформируем данные в управляемые активы, обеспечивая технологический суверенитет и операционную эффективность.
+                </p>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="glass p-6 rounded-2xl">
+                        <div class="text-3xl font-bold text-cyan-400 mb-1">51 млрд ₽</div>
+                        <div class="text-xs uppercase tracking-wider opacity-50">Выручка 2025</div>
+                    </div>
+                    <div class="glass p-6 rounded-2xl">
+                        <div class="text-3xl font-bold text-green-400 mb-1">+693%</div>
+                        <div class="text-xs uppercase tracking-wider opacity-50">Рост прибыли</div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="glass p-8 rounded-3xl relative z-10">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-cyan-500/20 rounded-lg text-cyan-400">
+                            <i data-lucide="cpu"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">AI & Big Data Focus</h3>
+                    </div>
+                    <ul class="space-y-4 text-slate-300">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-cyan-500 w-5 h-5 mt-1"></i>
+                            <span>Лидер в интеллектуальных системах прогнозирования</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-cyan-500 w-5 h-5 mt-1"></i>
+                            <span>Собственная облачная инфраструктура</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-cyan-500 w-5 h-5 mt-1"></i>
+                            <span>Рост Smart Water: +53% за год</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="absolute -top-10 -right-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <section id="product" class="py-32 bg-slate-900/30">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Экосистема Smart Water</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Единый операционный контур: от IoT-датчиков до предиктивной аналитики на базе ИИ.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-10 rounded-3xl">
+                    <i data-lucide="waves" class="text-cyan-400 w-12 h-12 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">Мониторинг</h3>
+                    <p class="text-slate-400 leading-relaxed">Контроль параметров воды и климата в реальном времени через сеть IoT-датчиков.</p>
+                </div>
+                <div class="glass-card p-10 rounded-3xl border-cyan-500/30">
+                    <i data-lucide="database" class="text-cyan-400 w-12 h-12 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">Интеграция</h3>
+                    <p class="text-slate-400 leading-relaxed">Объединение данных ДЗЗ, SCADA и IoT в единый доверенный оператор данных.</p>
+                </div>
+                <div class="glass-card p-10 rounded-3xl">
+                    <i data-lucide="trending-up" class="text-cyan-400 w-12 h-12 mb-6"></i>
+                    <h3 class="text-2xl font-bold mb-4">Прогноз</h3>
+                    <p class="text-slate-400 leading-relaxed">Предиктивное моделирование уровней воды на основе осадков и потребления.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hypothesis & Map -->
+    <section class="py-32 container mx-auto px-6 overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center gap-16">
+            <div class="md:w-1/2">
+                <h2 class="text-4xl font-bold mb-8">Вода как <span class="text-cyan-400">геополитический актив</span></h2>
+                <div class="space-y-6 text-slate-300 text-lg">
+                    <p>Центральная Азия — регион, где водная безопасность определяет политический вес. Узбекистан, находясь в низовьях рек, критически зависит от цифрового контроля ресурсов.</p>
+                    <div class="p-6 border-l-4 border-cyan-500 bg-cyan-500/5 italic">
+                        "Рынок ирригации в ЦА оценивается в $130–200 млн с прогнозом удвоения к 2030 году."
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative">
+                <!-- Abstract Map Visual -->
+                <div class="w-full aspect-square glass rounded-full flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-transparent rounded-full animate-pulse"></div>
+                    <div class="text-center z-10">
+                        <div class="text-6xl font-bold text-white mb-2">UZ</div>
+                        <div class="text-cyan-400 tracking-widest uppercase text-sm">Priority Market</div>
+                    </div>
+                    <!-- Orbiting dots -->
+                    <div class="absolute w-4 h-4 bg-cyan-400 rounded-full top-1/4 left-1/4 shadow-[0_0_15px_#00f2ff]"></div>
+                    <div class="absolute w-3 h-3 bg-white/30 rounded-full bottom-1/3 right-1/4"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scenarios (Interactive Tabs) -->
+    <section id="strategy" class="py-32 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-16 text-center">Сценарии выхода на рынок</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Scenario 1 -->
+                <div class="glass p-8 rounded-3xl opacity-50 hover:opacity-100 transition-all cursor-pointer group">
+                    <div class="text-xs font-bold text-slate-500 mb-4 uppercase tracking-widest">Сценарий 01</div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400">ГЧП + ВЭБ</h3>
+                    <p class="text-sm text-slate-400 mb-6">Классическая модель государственно-частного партнерства с кредитным плечом.</p>
+                    <div class="h-1 w-0 group-hover:w-full bg-cyan-500 transition-all duration-500"></div>
+                </div>
+                <!-- Scenario 2 -->
+                <div class="glass p-8 rounded-3xl opacity-50 hover:opacity-100 transition-all cursor-pointer group">
+                    <div class="text-xs font-bold text-slate-500 mb-4 uppercase tracking-widest">Сценарий 02</div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400">SaaS Модель</h3>
+                    <p class="text-sm text-slate-400 mb-6">Прямое соглашение с госкомпаниями Узбекистана по подписке на ПО.</p>
+                    <div class="h-1 w-0 group-hover:w-full bg-cyan-500 transition-all duration-500"></div>
+                </div>
+                <!-- Scenario 3 (Highlight) -->
+                <div class="glass p-8 rounded-3xl border-cyan-500/50 ring-1 ring-cyan-500/20 relative overflow-hidden group cursor-pointer">
+                    <div class="absolute top-0 right-0 bg-cyan-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase">Рекомендовано</div>
+                    <div class="text-xs font-bold text-cyan-400 mb-4 uppercase tracking-widest">Сценарий 03</div>
+                    <h3 class="text-xl font-bold mb-4 text-white">Тендер ЮНИДО</h3>
+                    <p class="text-sm text-slate-300 mb-6">Международный «политический зонтик», снижающий суверенные риски и обеспечивающий легитимность.</p>
+                    <div class="h-1 w-full bg-cyan-500"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Matrix -->
+    <section id="risks" class="py-32 container mx-auto px-6">
+        <div class="text-center mb-20">
+            <h2 class="text-4xl font-bold mb-4">Матрица рисков</h2>
+            <p class="text-slate-400">Анализ вероятности и влияния факторов на проект</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto glass p-10 rounded-3xl">
+            <div class="grid grid-cols-4 gap-4 text-center text-xs font-bold uppercase tracking-widest text-slate-500 mb-8">
+                <div>Риск</div>
+                <div>Вероятность</div>
+                <div>Влияние</div>
+                <div>Приоритет</div>
+            </div>
+            <div class="space-y-4">
+                <div class="grid grid-cols-4 gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors items-center border-b border-white/5">
+                    <div class="font-bold">Ферганская конфликтогенность</div>
+                    <div class="text-yellow-500">Средняя</div>
+                    <div class="text-red-500">Высокое</div>
+                    <div class="bg-yellow-500/20 text-yellow-500 py-1 rounded text-[10px] text-center">MEDIUM</div>
+                </div>
+                <div class="grid grid-cols-4 gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors items-center border-b border-white/5">
+                    <div class="font-bold">Таджикский вопрос</div>
+                    <div class="text-yellow-500">Средняя</div>
+                    <div class="text-red-500">Высокое</div>
+                    <div class="bg-yellow-500/20 text-yellow-500 py-1 rounded text-[10px] text-center">MEDIUM</div>
+                </div>
+                <div class="grid grid-cols-4 gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors items-center">
+                    <div class="font-bold">Локализация данных</div>
+                    <div class="text-red-500">Высокая</div>
+                    <div class="text-red-500">Критическое</div>
+                    <div class="bg-red-500/20 text-red-500 py-1 rounded text-[10px] text-center">CRITICAL</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="py-32 bg-slate-900/30 overflow-hidden">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-20 text-center">Дорожная карта (ЮНИДО)</h2>
+            <div class="relative">
+                <!-- Line -->
+                <div class="absolute top-1/2 left-0 w-full h-px bg-cyan-500/30 -translate-y-1/2 hidden md:block"></div>
+                
+                <div class="grid md:grid-cols-5 gap-8 relative z-10">
+                    <div class="text-center">
+                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
+                        <div class="text-cyan-400 font-bold mb-2">Этап 1</div>
+                        <div class="text-sm font-medium">Мониторинг тендеров</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
+                        <div class="text-cyan-400 font-bold mb-2">Этап 2</div>
+                        <div class="text-sm font-medium">Выбор лота (Ирригация)</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
+                        <div class="text-cyan-400 font-bold mb-2">Этап 3</div>
+                        <div class="text-sm font-medium">Локальный партнер</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
+                        <div class="text-cyan-400 font-bold mb-2">Этап 4</div>
+                        <div class="text-sm font-medium">Пилотный кейс</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
+                        <div class="text-cyan-400 font-bold mb-2">Этап 5</div>
+                        <div class="text-sm font-medium">Масштабирование</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SWOT -->
+    <section class="py-32 container mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="glass p-10 rounded-3xl border-l-4 border-green-500">
+                <h3 class="text-2xl font-bold mb-4 text-green-400">Strengths</h3>
+                <ul class="text-slate-400 space-y-2 text-sm">
+                    <li>• Масштабированный продукт с кейсами</li>
+                    <li>• Собственная облачная платформа</li>
+                    <li>• Высокая маржинальность (+693% прибыль)</li>
+                </ul>
+            </div>
+            <div class="glass p-10 rounded-3xl border-l-4 border-red-500">
+                <h3 class="text-2xl font-bold mb-4 text-red-400">Weaknesses</h3>
+                <ul class="text-slate-400 space-y-2 text-sm">
+                    <li>• Зависимость от импортных IoT-компонентов</li>
+                    <li>• Отсутствие локального офиса в Ташкенте</li>
+                </ul>
+            </div>
+            <div class="glass p-10 rounded-3xl border-l-4 border-cyan-500">
+                <h3 class="text-2xl font-bold mb-4 text-cyan-400">Opportunities</h3>
+                <ul class="text-slate-400 space-y-2 text-sm">
+                    <li>• Кредит АБР на $125 млн для Узбекистана</li>
+                    <li>• Статус "гуманитарно необходимой" технологии</li>
+                </ul>
+            </div>
+            <div class="glass p-10 rounded-3xl border-l-4 border-orange-500">
+                <h3 class="text-2xl font-bold mb-4 text-orange-400">Threats</h3>
+                <ul class="text-slate-400 space-y-2 text-sm">
+                    <li>• Конкуренция с Huawei/ZTE (BRI)</li>
+                    <li>• Вторичные санкции США на банки-партнеры</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / CTA -->
+    <footer class="py-32 bg-black text-center border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <h2 class="text-5xl font-bold mb-8">Готовы к экспансии?</h2>
+            <p class="text-slate-500 mb-12 max-w-xl mx-auto">Smart Water — это не просто софт. Это фундамент стабильности региона в эпоху климатических изменений.</p>
+            <button id="contact-btn" class="px-12 py-5 bg-white text-black font-bold rounded-full hover:bg-cyan-400 transition-all transform hover:scale-105 mb-20">
+                Связаться с командой MWS
+            </button>
+            <div class="flex justify-center gap-10 opacity-30 grayscale">
+                <div class="font-bold text-2xl italic">MTS</div>
+                <div class="font-bold text-2xl italic">UNIDO</div>
+                <div class="font-bold text-2xl italic">VEB.RF</div>
+            </div>
+            <div class="mt-20 text-xs text-slate-600 uppercase tracking-widest">
+                © 2026 MTS Web Services. Strategic Analysis Department.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" id="modal-overlay"></div>
+        <div class="glass p-12 rounded-[40px] relative z-10 max-w-md w-full mx-6 border-cyan-500/30 shadow-[0_0_50px_rgba(0,242,255,0.1)] transform scale-90 transition-all duration-500" id="modal-content">
+            <button id="close-modal" class="absolute top-6 right-6 text-slate-500 hover:text-white transition-colors">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="text-center">
+                <div class="w-20 h-20 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-8 text-cyan-400">
+                    <i data-lucide="user" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Мокрова Алина Дмитриевна</h3>
+                <p class="text-cyan-400 font-medium mb-8 uppercase tracking-widest text-xs">Директор по стратегическому развитию</p>
+                
+                <div class="space-y-4">
+                    <a href="mailto:mokrovaad@gmail.com" class="flex items-center justify-center gap-3 p-4 glass rounded-2xl hover:bg-white/5 transition-all group">
+                        <i data-lucide="mail" class="w-5 h-5 text-cyan-400"></i>
+                        <span class="font-medium group-hover:text-cyan-400 transition-colors">mokrovaad@gmail.com</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Modal Logic
+        const contactBtn = document.getElementById('contact-btn');
+        const modal = document.getElementById('contact-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModal = document.getElementById('close-modal');
+        const modalOverlay = document.getElementById('modal-overlay');
+
+        const openModal = () => {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-90');
+            modalContent.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const hideModal = () => {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-90');
+            document.body.style.overflow = 'auto';
+        };
+
+        contactBtn.addEventListener('click', openModal);
+        closeModal.addEventListener('click', hideModal);
+        modalOverlay.addEventListener('click', hideModal);
+
+        // Scroll Progress Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Navbar background change
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('glass', 'py-4');
+                nav.classList.remove('py-6');
+            } else {
+                nav.classList.remove('glass', 'py-4');
+                nav.classList.add('py-6');
+            }
+        };
+
+        // Simple Reveal Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
