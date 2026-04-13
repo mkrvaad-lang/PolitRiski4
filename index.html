@@ -78,9 +78,11 @@
             <a href="#product" class="hover:text-cyan-400 transition-colors">Продукт</a>
             <a href="#strategy" class="hover:text-cyan-400 transition-colors">Стратегия</a>
             <a href="#risks" class="hover:text-cyan-400 transition-colors">Риски</a>
+            <a href="#stakeholders" class="hover:text-cyan-400 transition-colors">Игроки</a>
+            <a href="#pest" class="hover:text-cyan-400 transition-colors">Аналитика</a>
         </div>
-        <button class="px-6 py-2 border border-cyan-500/50 rounded-full text-xs font-bold hover:bg-cyan-500/10 transition-all">
-            UZBEKISTAN 2026
+        <button id="nav-contact-btn" class="w-10 h-10 flex items-center justify-center border border-cyan-500/30 rounded-full text-cyan-400 hover:bg-cyan-500/10 transition-all group" title="Контакты">
+            <i data-lucide="user" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
         </button>
     </nav>
 
@@ -220,104 +222,230 @@
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold mb-16 text-center">Сценарии выхода на рынок</h2>
             
-            <div class="grid md:grid-cols-3 gap-6">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Scenario 1 -->
                 <div class="glass p-8 rounded-3xl opacity-50 hover:opacity-100 transition-all cursor-pointer group">
                     <div class="text-xs font-bold text-slate-500 mb-4 uppercase tracking-widest">Сценарий 01</div>
-                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400">ГЧП + ВЭБ</h3>
-                    <p class="text-sm text-slate-400 mb-6">Классическая модель государственно-частного партнерства с кредитным плечом.</p>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400">ГЧП</h3>
+                    <p class="text-sm text-slate-400 mb-6">МТС заключает государственно-частное партнерство с Узбекистаном.</p>
                     <div class="h-1 w-0 group-hover:w-full bg-cyan-500 transition-all duration-500"></div>
                 </div>
-                <!-- Scenario 2 -->
-                <div class="glass p-8 rounded-3xl opacity-50 hover:opacity-100 transition-all cursor-pointer group">
-                    <div class="text-xs font-bold text-slate-500 mb-4 uppercase tracking-widest">Сценарий 02</div>
-                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400">SaaS Модель</h3>
-                    <p class="text-sm text-slate-400 mb-6">Прямое соглашение с госкомпаниями Узбекистана по подписке на ПО.</p>
-                    <div class="h-1 w-0 group-hover:w-full bg-cyan-500 transition-all duration-500"></div>
-                </div>
-                <!-- Scenario 3 (Highlight) -->
+                <!-- Scenario 2 (Highlight) -->
                 <div class="glass p-8 rounded-3xl border-cyan-500/50 ring-1 ring-cyan-500/20 relative overflow-hidden group cursor-pointer">
                     <div class="absolute top-0 right-0 bg-cyan-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase">Рекомендовано</div>
-                    <div class="text-xs font-bold text-cyan-400 mb-4 uppercase tracking-widest">Сценарий 03</div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Тендер ЮНИДО</h3>
-                    <p class="text-sm text-slate-300 mb-6">Международный «политический зонтик», снижающий суверенные риски и обеспечивающий легитимность.</p>
+                    <div class="text-xs font-bold text-cyan-400 mb-4 uppercase tracking-widest">Сценарий 02</div>
+                    <h3 class="text-xl font-bold mb-4 text-white">SaaS + Заемный капитал</h3>
+                    <p class="text-sm text-slate-300 mb-6">Финансирование проекта через заемный капитал и SaaS-соглашение с крупной компанией в Узбекистане (подписка).</p>
                     <div class="h-1 w-full bg-cyan-500"></div>
                 </div>
+                <!-- Scenario 3 -->
+                <div class="glass p-8 rounded-3xl opacity-50 hover:opacity-100 transition-all cursor-pointer group">
+                    <div class="text-xs font-bold text-slate-500 mb-4 uppercase tracking-widest">Сценарий 03</div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400">Тендер ЮНИДО</h3>
+                    <p class="text-sm text-slate-400 mb-6">МТС выигрывает международный тендер ЮНИДО. Обслуживание осуществляется ООО МТС Веб Сервисы.</p>
+                    <div class="h-1 w-0 group-hover:w-full bg-cyan-500 transition-all duration-500"></div>
+                </div>
+                <!-- Scenario 4 -->
+                <div class="glass p-8 rounded-3xl opacity-50 hover:opacity-100 transition-all cursor-pointer group">
+                    <div class="text-xs font-bold text-slate-500 mb-4 uppercase tracking-widest">Сценарий 04</div>
+                    <h3 class="text-xl font-bold mb-4 group-hover:text-cyan-400">Опцион выкупа</h3>
+                    <p class="text-sm text-slate-400 mb-6">Создание номинального частного предприятия в Узбекистане с правом выкупа юридического лица.</p>
+                    <div class="h-1 w-0 group-hover:w-full bg-cyan-500 transition-all duration-500"></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Risk Matrix -->
+    <!-- Risk Analysis Section -->
     <section id="risks" class="py-32 container mx-auto px-6">
         <div class="text-center mb-20">
-            <h2 class="text-4xl font-bold mb-4">Матрица рисков</h2>
-            <p class="text-slate-400">Анализ вероятности и влияния факторов на проект</p>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Анализ рисков</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">Комплексная оценка угроз и стратегия их минимизации через Bow-Tie анализ и матрицу приоритетов.</p>
         </div>
 
-        <div class="max-w-4xl mx-auto glass p-10 rounded-3xl">
-            <div class="grid grid-cols-4 gap-4 text-center text-xs font-bold uppercase tracking-widest text-slate-500 mb-8">
-                <div>Риск</div>
-                <div>Вероятность</div>
-                <div>Влияние</div>
-                <div>Приоритет</div>
-            </div>
-            <div class="space-y-4">
-                <div class="grid grid-cols-4 gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors items-center border-b border-white/5">
-                    <div class="font-bold">Ферганская конфликтогенность</div>
-                    <div class="text-yellow-500">Средняя</div>
-                    <div class="text-red-500">Высокое</div>
-                    <div class="bg-yellow-500/20 text-yellow-500 py-1 rounded text-[10px] text-center">MEDIUM</div>
-                </div>
-                <div class="grid grid-cols-4 gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors items-center border-b border-white/5">
-                    <div class="font-bold">Таджикский вопрос</div>
-                    <div class="text-yellow-500">Средняя</div>
-                    <div class="text-red-500">Высокое</div>
-                    <div class="bg-yellow-500/20 text-yellow-500 py-1 rounded text-[10px] text-center">MEDIUM</div>
-                </div>
-                <div class="grid grid-cols-4 gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors items-center">
-                    <div class="font-bold">Локализация данных</div>
-                    <div class="text-red-500">Высокая</div>
-                    <div class="text-red-500">Критическое</div>
-                    <div class="bg-red-500/20 text-red-500 py-1 rounded text-[10px] text-center">CRITICAL</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Roadmap -->
-    <section class="py-32 bg-slate-900/30 overflow-hidden">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold mb-20 text-center">Дорожная карта (ЮНИДО)</h2>
-            <div class="relative">
-                <!-- Line -->
-                <div class="absolute top-1/2 left-0 w-full h-px bg-cyan-500/30 -translate-y-1/2 hidden md:block"></div>
+        <!-- Bow-Tie Analysis -->
+        <div class="mb-32">
+            <h3 class="text-2xl font-bold mb-12 text-center text-cyan-400 uppercase tracking-widest">Bow-Tie Модель: Эскалация конфликта</h3>
+            <div class="grid lg:grid-cols-3 gap-8 items-center relative max-w-6xl mx-auto">
                 
-                <div class="grid md:grid-cols-5 gap-8 relative z-10">
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
-                        <div class="text-cyan-400 font-bold mb-2">Этап 1</div>
-                        <div class="text-sm font-medium">Мониторинг тендеров</div>
+                <!-- Triggers (Left Wing) -->
+                <div class="space-y-4 relative">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-6 text-center tracking-[0.2em]">Триггеры (Triggers)</div>
+                    
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-cyan-500 hover:bg-cyan-500/10 transition-all cursor-help group relative">
+                        <div class="font-bold text-sm mb-1 group-hover:text-cyan-400">Рейды на таджиков</div>
+                        <p class="text-[11px] text-slate-400">Массовые проверки и задержания в Ферганской долине.</p>
+                        <div class="absolute -right-4 top-1/2 w-4 h-px bg-cyan-500/30 hidden lg:block"></div>
                     </div>
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
-                        <div class="text-cyan-400 font-bold mb-2">Этап 2</div>
-                        <div class="text-sm font-medium">Выбор лота (Ирригация)</div>
+
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-cyan-500 hover:bg-cyan-500/10 transition-all cursor-help group relative">
+                        <div class="font-bold text-sm mb-1 group-hover:text-cyan-400">Подавление протестов</div>
+                        <p class="text-[11px] text-slate-400">Силовое вмешательство и человеческие жертвы.</p>
+                        <div class="absolute -right-4 top-1/2 w-4 h-px bg-cyan-500/30 hidden lg:block"></div>
                     </div>
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
-                        <div class="text-cyan-400 font-bold mb-2">Этап 3</div>
-                        <div class="text-sm font-medium">Локальный партнер</div>
+
+                    <div class="glass-card p-5 rounded-2xl border-l-4 border-cyan-500 hover:bg-cyan-500/10 transition-all cursor-help group relative">
+                        <div class="font-bold text-sm mb-1 group-hover:text-cyan-400">Вывод ВС</div>
+                        <p class="text-[11px] text-slate-400">Развертывание вооруженных сил в Ферганской долине.</p>
+                        <div class="absolute -right-4 top-1/2 w-4 h-px bg-cyan-500/30 hidden lg:block"></div>
                     </div>
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
-                        <div class="text-cyan-400 font-bold mb-2">Этап 4</div>
-                        <div class="text-sm font-medium">Пилотный кейс</div>
+
+                    <!-- Visual Connector Left -->
+                    <div class="hidden lg:block absolute top-[15%] right-[-2rem] bottom-[15%] w-px bg-gradient-to-b from-transparent via-cyan-500/30 to-transparent"></div>
+                </div>
+
+                <!-- Central Event (The Knot) -->
+                <div class="relative flex flex-col items-center py-10">
+                    <div class="absolute inset-0 bg-cyan-500/5 blur-3xl rounded-full"></div>
+                    
+                    <div class="glass w-48 h-48 rounded-full border-2 border-cyan-500 shadow-[0_0_50px_rgba(0,242,255,0.15)] flex flex-col items-center justify-center text-center z-10 relative group hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 rounded-full border border-cyan-500/20 animate-ping"></div>
+                        <div class="text-cyan-400 mb-3 animate-pulse">
+                            <i data-lucide="zap" class="w-8 h-8 mx-auto"></i>
+                        </div>
+                        <div class="font-black text-sm uppercase tracking-tighter leading-tight px-4">
+                            Срабатывание <br> сценария
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <div class="w-4 h-4 bg-cyan-500 rounded-full mx-auto mb-6 shadow-[0_0_15px_#00f2ff]"></div>
-                        <div class="text-cyan-400 font-bold mb-2">Этап 5</div>
-                        <div class="text-sm font-medium">Масштабирование</div>
+                    
+                    <div class="mt-8 text-[10px] font-black text-cyan-500 uppercase tracking-[0.3em] bg-cyan-500/10 px-6 py-2 rounded-full border border-cyan-500/20">
+                        Критический узел
                     </div>
+                </div>
+
+                <!-- Consequences (Right Wing) -->
+                <div class="space-y-4 relative">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-6 text-center tracking-[0.2em]">Последствия (Consequences)</div>
+                    
+                    <div class="glass-card p-5 rounded-2xl border-r-4 border-red-500 hover:bg-red-500/10 transition-all cursor-help group relative text-right">
+                        <div class="font-bold text-sm mb-1 group-hover:text-red-400">Рост напряженности</div>
+                        <p class="text-[11px] text-slate-400">Массовые демонстрации и дестабилизация региона.</p>
+                        <div class="absolute -left-4 top-1/2 w-4 h-px bg-red-500/30 hidden lg:block"></div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border-r-4 border-red-500 hover:bg-red-500/10 transition-all cursor-help group relative text-right">
+                        <div class="font-bold text-sm mb-1 group-hover:text-red-400">Радикализация</div>
+                        <p class="text-[11px] text-slate-400">Рост экстремистских настроений среди населения.</p>
+                        <div class="absolute -left-4 top-1/2 w-4 h-px bg-red-500/30 hidden lg:block"></div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border-r-4 border-red-500 hover:bg-red-500/10 transition-all cursor-help group relative text-right">
+                        <div class="font-bold text-sm mb-1 group-hover:text-red-400">Партизанская война</div>
+                        <p class="text-[11px] text-slate-400">Переход к активному вооруженному сопротивлению.</p>
+                        <div class="absolute -left-4 top-1/2 w-4 h-px bg-red-500/30 hidden lg:block"></div>
+                    </div>
+
+                    <!-- Visual Connector Right -->
+                    <div class="hidden lg:block absolute top-[15%] left-[-2rem] bottom-[15%] w-px bg-gradient-to-b from-transparent via-red-500/30 to-transparent"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Risk Matrix (Heatmap) -->
+        <div class="max-w-5xl mx-auto">
+            <h3 class="text-2xl font-bold mb-12 text-center text-cyan-400 uppercase tracking-widest">Матрица рисков (Heatmap)</h3>
+            <div class="glass p-10 rounded-[40px] overflow-hidden relative">
+                
+                <div class="grid grid-cols-6 gap-2">
+                    <!-- Y-axis label -->
+                    <div class="col-span-1 flex items-center justify-center">
+                        <div class="rotate-[-90deg] text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] whitespace-nowrap">Вероятность</div>
+                    </div>
+                    
+                    <!-- Matrix Content -->
+                    <div class="col-span-5">
+                        <div class="grid grid-cols-4 gap-2 mb-2">
+                            <!-- Row: High Probability -->
+                            <div class="aspect-square bg-orange-500/20 border border-orange-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-orange-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-orange-400 mb-1">12</span>
+                                <span class="text-[10px] leading-tight">Бюрократия</span>
+                            </div>
+                            <div class="aspect-square bg-red-500/40 border border-red-500/50 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-red-500/50 transition-all">
+                                <span class="text-[9px] font-bold text-red-400 mb-1">15</span>
+                                <span class="text-[10px] leading-tight font-bold">Валютные риски</span>
+                            </div>
+                            <div class="aspect-square bg-red-600/60 border border-red-600 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-red-600/80 transition-all shadow-[0_0_20px_rgba(220,38,38,0.3)]">
+                                <span class="text-[9px] font-bold text-white mb-1">16</span>
+                                <span class="text-[10px] leading-tight font-black text-white">Локализация данных</span>
+                            </div>
+                            <div class="aspect-square bg-red-700 border border-red-500 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:scale-105 transition-all shadow-[0_0_30px_rgba(220,38,38,0.5)]">
+                                <span class="text-[9px] font-bold text-white mb-1">20</span>
+                                <span class="text-[10px] leading-tight font-black text-white">Политический кризис</span>
+                            </div>
+
+                            <!-- Row: Medium-High -->
+                            <div class="aspect-square bg-yellow-500/20 border border-yellow-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-yellow-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-yellow-400 mb-1">9</span>
+                                <span class="text-[10px] leading-tight">Тех. сбои</span>
+                            </div>
+                            <div class="aspect-square bg-orange-500/20 border border-orange-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-orange-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-orange-400 mb-1">10</span>
+                                <span class="text-[10px] leading-tight">Конкуренция</span>
+                            </div>
+                            <div class="aspect-square bg-red-500/40 border border-red-500/50 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-red-500/50 transition-all">
+                                <span class="text-[9px] font-bold text-red-400 mb-1">11</span>
+                                <span class="text-[10px] leading-tight font-bold">Изменение законов</span>
+                            </div>
+                            <div class="aspect-square bg-red-600/60 border border-red-600 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-red-600/80 transition-all">
+                                <span class="text-[9px] font-bold text-white mb-1">14</span>
+                                <span class="text-[10px] leading-tight font-bold text-white">Трансграничные споры</span>
+                            </div>
+
+                            <!-- Row: Medium-Low -->
+                            <div class="aspect-square bg-green-500/20 border border-green-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-green-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-green-400 mb-1">5</span>
+                                <span class="text-[10px] leading-tight">Кадры</span>
+                            </div>
+                            <div class="aspect-square bg-yellow-500/20 border border-yellow-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-yellow-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-yellow-400 mb-1">6</span>
+                                <span class="text-[10px] leading-tight">Оборудование</span>
+                            </div>
+                            <div class="aspect-square bg-orange-500/20 border border-orange-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-orange-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-orange-400 mb-1">7</span>
+                                <span class="text-[10px] leading-tight">Эко-протесты</span>
+                            </div>
+                            <div class="aspect-square bg-red-500/40 border border-red-500/50 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-red-500/50 transition-all">
+                                <span class="text-[9px] font-bold text-red-400 mb-1">8</span>
+                                <span class="text-[10px] leading-tight font-bold">Кибератаки</span>
+                            </div>
+
+                            <!-- Row: Low -->
+                            <div class="aspect-square bg-green-500/10 border border-green-500/20 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-green-500/20 transition-all">
+                                <span class="text-[9px] font-bold text-green-500/50 mb-1">1</span>
+                                <span class="text-[10px] leading-tight opacity-50">Логистика</span>
+                            </div>
+                            <div class="aspect-square bg-green-500/20 border border-green-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-green-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-green-400 mb-1">2</span>
+                                <span class="text-[10px] leading-tight">Инфляция</span>
+                            </div>
+                            <div class="aspect-square bg-yellow-500/20 border border-yellow-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-yellow-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-yellow-400 mb-1">3</span>
+                                <span class="text-[10px] leading-tight">Налоги</span>
+                            </div>
+                            <div class="aspect-square bg-orange-500/20 border border-orange-500/30 rounded-xl flex flex-col items-center justify-center p-2 text-center group hover:bg-orange-500/30 transition-all">
+                                <span class="text-[9px] font-bold text-orange-400 mb-1">4</span>
+                                <span class="text-[10px] leading-tight">Лицензии</span>
+                            </div>
+                        </div>
+
+                        <!-- X-axis labels -->
+                        <div class="grid grid-cols-4 gap-2 text-center text-[10px] font-black text-slate-500 uppercase tracking-widest mt-4">
+                            <div>Низкое</div>
+                            <div>Среднее</div>
+                            <div>Высокое</div>
+                            <div>Критическое</div>
+                        </div>
+                        <div class="text-center text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] mt-2">Влияние</div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="mt-12 flex flex-wrap justify-center gap-6 text-[9px] font-black uppercase tracking-widest">
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-green-500/20 border border-green-500/30 rounded"></div> 1-5: Низкий</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-yellow-500/20 border border-yellow-500/30 rounded"></div> 6-10: Умеренный</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-orange-500/30 border border-orange-500/40 rounded"></div> 11-15: Высокий</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-red-600/80 border border-red-600 rounded shadow-[0_0_10px_rgba(220,38,38,0.5)]"></div> 16-25: Критический</div>
                 </div>
             </div>
         </div>
@@ -650,6 +778,127 @@
         </div>
     </div>
 
+    <!-- Feasibility Section -->
+    <section id="feasibility" class="py-32 bg-slate-900/50 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tighter">Целесообразность <span class="text-gradient">проекта</span></h2>
+                <p class="text-slate-400 max-w-3xl mx-auto text-lg font-light">Анализ готовности рынка и стратегических условий реализации Smart Water в Узбекистане.</p>
+            </div>
+
+            <!-- Market Context Cards -->
+            <div class="grid md:grid-cols-3 gap-8 mb-20">
+                <div class="glass p-8 rounded-3xl border-t-4 border-cyan-500">
+                    <div class="text-cyan-400 mb-4"><i data-lucide="trending-up" class="w-10 h-10"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Фаза управления</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Рынок переходит от строительства к аналитике. В инфраструктуру уже вложено <b>$622 млн</b> — теперь государству нужны данные поверх архитектуры.</p>
+                </div>
+                <div class="glass p-8 rounded-3xl border-t-4 border-cyan-500">
+                    <div class="text-cyan-400 mb-4"><i data-lucide="pie-chart" class="w-10 h-10"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Объем рынка</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Текущий объем <b>$130-200 млн</b>. Прогноз: удвоение к 2030 году на фоне острого водного дефицита в регионе.</p>
+                </div>
+                <div class="glass p-8 rounded-3xl border-t-4 border-cyan-500">
+                    <div class="text-cyan-400 mb-4"><i data-lucide="landmark" class="w-10 h-10"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Финансирование</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed"><b>$125 млн (ADB)</b> + <b>$35 млн (WB)</b> уже на рынке. Бюджет Узбекистана на 2026 год: <b>50 млрд сумов</b> на цифру.</p>
+                </div>
+            </div>
+
+            <!-- Feasibility Matrix (FS Scheme) -->
+            <div class="glass rounded-[40px] overflow-hidden border-white/5 mb-20">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 border-b border-white/5">
+                    <div class="p-10 border-r border-white/5 hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Стратегическая</span>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Подтверждена</h4>
+                        <p class="text-xs text-slate-400">Полное соответствие продукта временным окнам политической целесообразности.</p>
+                    </div>
+                    <div class="p-10 border-r border-white/5 hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Операционная</span>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Подтверждена</h4>
+                        <p class="text-xs text-slate-400">Развёртывание на местах, локальная команда и бесшовная интеграция через API.</p>
+                    </div>
+                    <div class="p-10 border-r border-white/5 hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Рыночная</span>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Подтверждена</h4>
+                        <p class="text-xs text-slate-400">Открытое гос. финансирование и активное участие АБР до 2027 года.</p>
+                    </div>
+                    <div class="p-10 hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_10px_#eab308]"></div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Регуляторная</span>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Условно</h4>
+                        <p class="text-xs text-slate-400">Суверенитет данных (on-premise) как жёсткое и обязательное условие входа.</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3">
+                    <div class="p-10 border-r border-white/5 hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_10px_#eab308]"></div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Финансовая</span>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Условно</h4>
+                        <p class="text-xs text-slate-400">Необходимо привлечение финансирования ВЭБ для закрытия крупных сделок.</p>
+                    </div>
+                    <div class="p-10 border-r border-white/5 hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Репутационная</span>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Управляемы</h4>
+                        <p class="text-xs text-slate-400">Климатический нарратив и локальный бренд нейтрализуют внешнюю критику.</p>
+                    </div>
+                    <div class="p-10 hover:bg-white/5 transition-colors">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Партнерская</span>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Умеренные</h4>
+                        <p class="text-xs text-slate-400">Защита через ШОС/ЕАЭС от поглощения китайскими игроками.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Verdict -->
+            <div class="max-w-4xl mx-auto glass p-12 rounded-[40px] border-2 border-cyan-500/30 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-cyan-500 text-black font-black px-8 py-2 rounded-bl-3xl uppercase tracking-widest text-xs">Итог: Реализуем</div>
+                <div class="flex flex-col md:flex-row gap-12 items-center">
+                    <div class="md:w-1/3 text-center">
+                        <div class="text-6xl font-black text-cyan-400 mb-2">2027</div>
+                        <div class="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500">Крайний срок окна</div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <h3 class="text-2xl font-bold mb-6">Три критических условия успеха:</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0 mt-1">1</div>
+                                <p class="text-sm text-slate-300"><b class="text-white">On-premise архитектура:</b> Полная локализация данных внутри страны.</p>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0 mt-1">2</div>
+                                <p class="text-sm text-slate-300"><b class="text-white">Финансирование ВЭБ:</b> Реальное кредитное плечо для масштабирования.</p>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0 mt-1">3</div>
+                                <p class="text-sm text-slate-300"><b class="text-white">Институциональная защита:</b> Использование механизмов ШОС против поглощения.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer / CTA -->
     <footer class="py-32 bg-black text-center border-t border-white/5">
         <div class="container mx-auto px-6">
@@ -658,11 +907,6 @@
             <button id="contact-btn" class="px-12 py-5 bg-white text-black font-bold rounded-full hover:bg-cyan-400 transition-all transform hover:scale-105 mb-20">
                 Связаться с командой MWS
             </button>
-            <div class="flex justify-center gap-10 opacity-30 grayscale">
-                <div class="font-bold text-2xl italic">MTS</div>
-                <div class="font-bold text-2xl italic">UNIDO</div>
-                <div class="font-bold text-2xl italic">VEB.RF</div>
-            </div>
             <div class="mt-20 text-xs text-slate-600 uppercase tracking-widest">
                 © 2026 MTS Web Services. Strategic Analysis Department.
             </div>
@@ -1032,6 +1276,7 @@
         };
 
         contactBtn.addEventListener('click', openModal);
+        document.getElementById('nav-contact-btn').addEventListener('click', openModal);
         closeModal.addEventListener('click', hideModal);
         modalOverlay.addEventListener('click', hideModal);
 
